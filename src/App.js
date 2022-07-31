@@ -21,8 +21,27 @@ class App extends React.Component {
       boxes: [],
       route: 'signin',
       isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: '',
+      },
     };
   }
+
+  loadUser = data => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined,
+      },
+    });
+  };
 
   onInputChange = e => {
     this.setState({ input: e.target.value });
@@ -101,7 +120,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { isSignedIn, imageUrl, route, boxes } = this.state;
+    const { isSignedIn, imageUrl, route, boxes, user } = this.state;
     return (
       <div className="App">
         <Navigation
@@ -111,7 +130,7 @@ class App extends React.Component {
         {route === 'home' ? (
           <>
             <Logo />
-            <Rank />
+            <Rank usermame={user.name} entries={user.entries} />
             <ImageLinkForm
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
@@ -119,9 +138,12 @@ class App extends React.Component {
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
           </>
         ) : route === 'signin' ? (
-          <Signin onRouteChange={this.onRouteChange} />
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
         )}
       </div>
     );
