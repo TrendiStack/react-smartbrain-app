@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImageLinkForm = ({ onInputChange, onSubmit }) => {
+const ImageLinkForm = ({ onInputChange, onPictureSubmit }) => {
   return (
     <div>
       <p className="text-center text-xl">
@@ -14,7 +14,7 @@ const ImageLinkForm = ({ onInputChange, onSubmit }) => {
             type="text"
           />
           <button
-            onClick={onSubmit}
+            onClick={onPictureSubmit}
             className="w-[50%] bg-indigo-800 py-2 rounded-md"
           >
             Detect

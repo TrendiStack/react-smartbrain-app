@@ -44,32 +44,15 @@ class App extends React.Component {
   };
 
   onInputChange = e => {
-    this.setState({ input: e.target.value });
-  };
-
-  calculateAllBoxes = data => {
-    const clairifaiBoxes = data.outputs[0].data.regions;
-    const loopedData = clairifaiBoxes.map(box => {
-      const boundingBoxes = box.region_info.bounding_box;
-      const image = document.getElementById('inputImage');
-      const width = Number(image.width);
-      const height = Number(image.height);
-      return {
-        leftCol: boundingBoxes.left_col * width,
-        topRow: boundingBoxes.top_row * height,
-        rightCol: width - boundingBoxes.right_col * width,
-        bottomRow: height - boundingBoxes.bottom_row * height,
-      };
-    });
-    return loopedData;
+    this.setState({ imageUrl: e.target.value });
   };
 
   displayFaceBoxes = boxes => {
     this.setState({ boxes: boxes });
   };
 
-  onSubmit = () => {
-    this.setState({ imageUrl: this.state.input });
+  onPictureSubmit = () => {
+    // this.setState({ imageUrl: this.state.input });
     const raw = JSON.stringify({
       user_app_id: {
         user_id: USER_ID,
@@ -85,7 +68,6 @@ class App extends React.Component {
         },
       ],
     });
-
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -106,8 +88,38 @@ class App extends React.Component {
       .then(response => response.json())
       .then(result => {
         this.displayFaceBoxes(this.calculateAllBoxes(result));
+        if (result) {
+          fetch('http://localhost:3002/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.state.user.id,
+            }),
+          })
+            .then(res => res.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            });
+        }
       })
       .catch(error => console.log('error', error));
+  };
+
+  calculateAllBoxes = data => {
+    const clairifaiBoxes = data.outputs[0].data.regions;
+    const loopedData = clairifaiBoxes.map(box => {
+      const boundingBoxes = box.region_info.bounding_box;
+      const image = document.getElementById('inputImage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+      return {
+        leftCol: boundingBoxes.left_col * width,
+        topRow: boundingBoxes.top_row * height,
+        rightCol: width - boundingBoxes.right_col * width,
+        bottomRow: height - boundingBoxes.bottom_row * height,
+      };
+    });
+    return loopedData;
   };
 
   onRouteChange = route => {
@@ -130,10 +142,10 @@ class App extends React.Component {
         {route === 'home' ? (
           <>
             <Logo />
-            <Rank usermame={user.name} entries={user.entries} />
+            <Rank username={user.name} entries={user.entries} />
             <ImageLinkForm
               onInputChange={this.onInputChange}
-              onSubmit={this.onSubmit}
+              onPictureSubmit={this.onPictureSubmit}
             />
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
           </>
