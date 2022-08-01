@@ -6,6 +6,7 @@ import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
+import ParticlesJs from './components/ParticlesJs/Particles';
 
 const USER_ID = 'uzistacks';
 const PAT = 'cadeda396d454d61a535c203b71a4436';
@@ -135,6 +136,7 @@ class App extends React.Component {
     const { isSignedIn, imageUrl, route, boxes, user } = this.state;
     return (
       <div className="App">
+        <ParticlesJs />
         <Navigation
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}
