@@ -36,7 +36,7 @@ class Register extends Component {
     })
       .then(res => res.json())
       .then(user => {
-        if (user) {
+        if (user.id) {
           this.props.loadUser(user);
           this.props.onRouteChange('home');
         }
@@ -69,6 +69,7 @@ class Register extends Component {
                   type="text"
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Name"
+                  required
                   onChange={onNameChange}
                 />
               </div>
@@ -82,6 +83,7 @@ class Register extends Component {
                   type="email"
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
+                  required
                   onChange={onEmailChange}
                 />
               </div>
@@ -95,6 +97,7 @@ class Register extends Component {
                   type="password"
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  required
                   onChange={onPasswordChange}
                 />
               </div>

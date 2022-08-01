@@ -1,11 +1,11 @@
 import React from 'react';
 
 const Navigation = ({ onRouteChange, isSignedIn }) => {
-  if (isSignedIn) {
+  if (isSignedIn === true) {
     return (
       <nav className="flex justify-end">
         <p
-          onClick={() => onRouteChange('signin')}
+          onClick={() => onRouteChange('register')}
           className="text-xl underline p-6 font-bold cursor-pointer"
         >
           Sign Out

@@ -8,12 +8,6 @@ import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import ParticlesJs from './components/ParticlesJs/Particles';
 
-const USER_ID = 'uzistacks';
-const PAT = 'cadeda396d454d61a535c203b71a4436';
-const APP_ID = 'Facedetection';
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5';
-
 const initialState = {
   input: '',
   imageUrl: '',
@@ -46,69 +40,6 @@ class App extends React.Component {
     });
   };
 
-  onInputChange = e => {
-    this.setState({ imageUrl: e.target.value });
-  };
-
-  displayFaceBoxes = boxes => {
-    this.setState({ boxes: boxes });
-  };
-
-  onPictureSubmit = () => {
-    // this.setState({ imageUrl: this.state.input });
-    const raw = JSON.stringify({
-      user_app_id: {
-        user_id: USER_ID,
-        app_id: APP_ID,
-      },
-      inputs: [
-        {
-          data: {
-            image: {
-              url: this.state.imageUrl,
-            },
-          },
-        },
-      ],
-    });
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Key ' + PAT,
-      },
-      body: raw,
-    };
-
-    fetch(
-      'https://api.clarifai.com/v2/models/' +
-        MODEL_ID +
-        '/versions/' +
-        MODEL_VERSION_ID +
-        '/outputs',
-      requestOptions
-    )
-      .then(response => response.json())
-      .then(result => {
-        this.displayFaceBoxes(this.calculateAllBoxes(result));
-        if (result) {
-          fetch('http://localhost:3002/image', {
-            method: 'put',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              id: this.state.user.id,
-            }),
-          })
-            .then(res => res.json())
-            .then(count => {
-              this.setState(Object.assign(this.state.user, { entries: count }));
-            })
-            .catch(err => console.log(err));
-        }
-      })
-      .catch(error => console.log('error', error));
-  };
-
   calculateAllBoxes = data => {
     const clairifaiBoxes = data.outputs[0].data.regions;
     const loopedData = clairifaiBoxes.map(box => {
@@ -126,11 +57,51 @@ class App extends React.Component {
     return loopedData;
   };
 
+  displayFaceBoxes = boxes => {
+    this.setState({ boxes: boxes });
+  };
+
+  onInputChange = event => {
+    this.setState({ input: event.target.value });
+  };
+
+  onPictureSubmit = () => {
+    this.setState({ imageUrl: this.state.input });
+    fetch('http://localhost:3002/imageurl', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        input: this.state.input,
+      }),
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (result) {
+          fetch('http://localhost:3002/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.state.user.id,
+            }),
+          })
+            .then(res => res.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            })
+            .catch(err => console.log(err));
+        }
+        this.displayFaceBoxes(this.calculateAllBoxes(result));
+      })
+      .catch(error => console.log('error', error));
+  };
+
   onRouteChange = route => {
     if (route === 'signout') {
       this.setState({ initialState });
     } else if (route === 'home') {
       this.setState({ isSignedIn: true });
+    } else {
+      this.setState({ isSignedIn: false });
     }
     this.setState({ route: route });
   };

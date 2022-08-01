@@ -4,23 +4,13 @@ import { loadFull } from 'tsparticles';
 
 const ParticlesJs = () => {
   const particlesInit = async main => {
-    console.log(main);
-
-    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(main);
-  };
-
-  const particlesLoaded = container => {
-    console.log(container);
   };
   return (
     <Particles
       className="fixed top-0 bottom-0 right-0 left-0 z-[-1]"
       id="tsparticles"
       init={particlesInit}
-      loaded={particlesLoaded}
       options={{
         background: {
           color: {

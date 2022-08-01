@@ -36,7 +36,7 @@ class Signin extends Component {
       });
   };
   render() {
-    const { onRouteChange, loadUser } = this.props;
+    const { onRouteChange } = this.props;
     const { onEmailChange, onPasswordChange, onSubmitSignIn } = this;
     return (
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -62,6 +62,7 @@ class Signin extends Component {
                   type="email"
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
+                  required
                   onChange={onEmailChange}
                 />
               </div>
@@ -75,6 +76,7 @@ class Signin extends Component {
                   type="password"
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
+                  required
                   onChange={onPasswordChange}
                 />
               </div>
