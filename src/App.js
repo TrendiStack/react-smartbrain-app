@@ -13,23 +13,25 @@ const PAT = 'cadeda396d454d61a535c203b71a4436';
 const APP_ID = 'Facedetection';
 const MODEL_ID = 'face-detection';
 const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5';
+
+const initialState = {
+  input: '',
+  imageUrl: '',
+  boxes: [],
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: '',
+  },
+};
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      boxes: [],
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: '',
-      },
-    };
+    this.state = initialState;
   }
 
   loadUser = data => {
@@ -100,7 +102,8 @@ class App extends React.Component {
             .then(res => res.json())
             .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }));
-            });
+            })
+            .catch(err => console.log(err));
         }
       })
       .catch(error => console.log('error', error));
@@ -125,7 +128,7 @@ class App extends React.Component {
 
   onRouteChange = route => {
     if (route === 'signout') {
-      this.setState({ isSignedIn: false });
+      this.setState({ initialState });
     } else if (route === 'home') {
       this.setState({ isSignedIn: true });
     }
