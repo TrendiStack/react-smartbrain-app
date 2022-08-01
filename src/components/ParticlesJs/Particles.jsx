@@ -42,10 +42,10 @@ const ParticlesJs = () => {
           },
           modes: {
             push: {
-              quantity: 4,
+              quantity: 1,
             },
             repulse: {
-              distance: 200,
+              distance: 100,
               duration: 0.4,
             },
           },
@@ -71,7 +71,7 @@ const ParticlesJs = () => {
               default: 'bounce',
             },
             random: false,
-            speed: 6,
+            speed: 4,
             straight: false,
           },
           number: {
