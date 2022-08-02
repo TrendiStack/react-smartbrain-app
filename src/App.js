@@ -77,7 +77,7 @@ class App extends React.Component {
       .then(response => response.json())
       .then(result => {
         if (result) {
-          fetch('https://fast-beach-67814.herokuapp.com/image', {
+          fetch('https://fast-beach-67814.herokuapp.com:3000/image', {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
