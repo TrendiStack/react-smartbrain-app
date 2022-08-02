@@ -19,7 +19,7 @@ class Signin extends Component {
 
   onSubmitSignIn = e => {
     e.preventDefault();
-    fetch('http://localhost:3002/signin', {
+    fetch('https://fast-beach-67814.herokuapp.com/signin', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
